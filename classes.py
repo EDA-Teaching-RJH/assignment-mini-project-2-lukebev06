@@ -1,0 +1,1 @@
+#adds students to classes and assigns teachers for them per subject. 1 teacher per subject.

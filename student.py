@@ -19,7 +19,7 @@ def add_student():
     new_name_1 = input("Enter a students first name: ")
     new_name_2 = input("Enter a students last name: ")
     new_id = input("enter a valid new student ID: ")
-    #add all new information to txt file
+    #add all new information to csv file
 def remove_student():
     
     

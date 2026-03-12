@@ -98,4 +98,17 @@ class patient(person):
                 return r["medical_record"]
         return[]
     
+    def save(self):
+        if not any(r["name"] == self.name for r in read_csv("patients")):
+            write_csv("patients", {"id": self.id, "name": self.name, "age": self.age, "condition": self.condition, "medical_record": ""})
+
     
+    def add_history(self,entry):
+        dated = f"[{date.todat()}] {entry}"
+        self.history.append(dated)
+        new_record = self.history
+
+        update_csv("patients", "name", self.name, "medical_record", new_record)
+
+    def get_history(self):
+        #return the history for the person

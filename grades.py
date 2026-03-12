@@ -1,1 +1,0 @@
-#add grades per student. add an average grade per student and average grade per class

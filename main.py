@@ -24,3 +24,21 @@ class hospital
  
 '''
 
+from datetime import date
+import csv
+import os
+
+CSV_FILES = {
+    "patients", ("patients.csv", ["id","name","age","condition","medical_record"]),
+    "staff", ("staff.csv", ["id","name","age","role","extra"]),
+    "appointments", ("appointments.csv", ["patient_name","doctor_name","date","status"])
+}
+
+def read_csv(key):
+    filepath, headers = CSV_FILES[key]
+    if not os.path.exists(filepath):
+        with open(filepath, "w", newline="") as f:
+            csv.writer(f).writerow(headers)
+    
+    with open(filepath, "r", newline = "") as f:
+        return list(csv.DictReader(f))

@@ -6,8 +6,8 @@ import os
 make a csv dictionary with tuples. allows for 1 place for things to be changed within csv format
 
 function to read csv -- done
-function to write csv
-function to update csv
+function to write csv -- done
+function to update csv -- done
 
 class hospital
 
@@ -52,5 +52,15 @@ def write_csv(key,row):
 
 def update_csv(key, match_field, match_value, update_field, new_value):
     #update the field in all rows where the field matches the value given.
-    
+    rows = read_csv(key)
+
+    for row in rows:
+        if row[match_field] == match_value:
+            row[update_field] = new_value
+        
+    filepath, headers = CSV_FILES[key]
+    with open(filepath, "w", newline="") as f:
+        w = csv.DictWriter(f,fieldnames = headers)
+        w.writeheader()
+        w.writerows(row)
 

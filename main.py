@@ -5,7 +5,7 @@ import os
 
 make a csv dictionary with tuples. allows for 1 place for things to be changed within csv format
 
-function to read csv
+function to read csv -- done
 function to write csv
 function to update csv
 
@@ -42,3 +42,15 @@ def read_csv(key):
     
     with open(filepath, "r", newline = "") as f:
         return list(csv.DictReader(f))
+
+def write_csv(key,row):
+    read_csv(key) # validates file exists
+    filepath, headers = CSV_FILES[key]
+
+    with open(filepath, "a", newline="") as f:
+        csv.DictWriter(f, fieldnames = headers).writerow(row)
+
+def update_csv(key, match_field, match_value, update_field, new_value):
+    #update the field in all rows where the field matches the value given.
+    
+

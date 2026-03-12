@@ -12,12 +12,15 @@ function to update csv -- done
 class hospital
 
  class person
+ --- lots of subclasses and inheritance of the same functions e.g. get_details. use a abstract base class. --- 
 
   class patient
+
   class staff
-  class doctor
-  class nurse
-  class receptionist
+--- use an abc like with person. due to the amount of subclasses that will use the same methods ---
+    class doctor
+    class nurse
+    class receptionist
 
  class appointment
  class
@@ -64,3 +67,5 @@ def update_csv(key, match_field, match_value, update_field, new_value):
         w.writeheader()
         w.writerows(row)
 
+class person():
+    

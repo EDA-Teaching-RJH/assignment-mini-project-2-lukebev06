@@ -28,6 +28,7 @@ class hospital
 '''
 
 from datetime import date
+from abc import ABC, abstractmethod
 import csv
 import os
 
@@ -67,5 +68,20 @@ def update_csv(key, match_field, match_value, update_field, new_value):
         w.writeheader()
         w.writerows(row)
 
-class person():
+class person(ABC):
+    
+    id_counter = 1
+
+    def __init__(self,name,age):
+        self.id = person.id_counter
+        person.id_counter += 1
+
+        self.name = name
+        self.age = age
+    
+    def get_details(self):
+        pass
+
+    def __str__(self):
+        return self.get_details()
     

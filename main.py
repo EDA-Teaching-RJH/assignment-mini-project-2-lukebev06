@@ -85,3 +85,17 @@ class person(ABC):
     def __str__(self):
         return self.get_details()
     
+class patient(person):
+
+    def __init__(self,name,age,condition):
+        super().__init__(name,age)
+        self.condition = condition
+        self.history = self.load_history()
+
+    def load_history(self):
+        for r in read_csv("patients"):
+            if r["name"] == self.name:
+                return r["medical_record"]
+        return[]
+    
+    

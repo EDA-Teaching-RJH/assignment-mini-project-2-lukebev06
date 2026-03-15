@@ -118,6 +118,13 @@ class patient(person):
         return result
     
     def get_details(self):
-        return f"Patient [{self.id}] | {self.name} | Age: {self.age} || Condition: {self.condition}"
+        return f"Patient [{self.id}] | {self.name} | Age: {self.age} | Condition: {self.condition}"
 
+    def load_all():
+        for r in read_csv("patients"):
+            p = patient(r["name"], int(r["age"]), r["condiion"])
+            patient.append(p)
+        return patient
     
+class staff(person, ABC):
+# name age and id

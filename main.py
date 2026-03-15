@@ -117,4 +117,7 @@ class patient(person):
             result = result + " " + entry + "\n"
         return result
     
+    def get_details(self):
+        return f"Patient [{self.id}] | {self.name} | Age: {self.age} || Condition: {self.condition}"
+
     

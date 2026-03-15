@@ -128,3 +128,21 @@ class patient(person):
     
 class staff(person, ABC):
 # name age and id
+
+    def __init__(self,name,age):
+        super().__init__(name, age)
+        self.department = "unassigned"
+
+    def get_role(self):
+        pass
+
+    def save(self):
+        if not any(r["name"] == self.name for r in read_csv("staff")):
+            write_csv("staff", {"id": self.id, "name": self.name, "age": self.age, "role": self.get_role(), "extra": self.get_extra()})
+
+    def extra():
+        return ""
+    
+    def get_details(self):
+        return f" {self.get_role()} [{self.id}]  | {self.name} | age: {self.age} | Department: {self.department} "
+

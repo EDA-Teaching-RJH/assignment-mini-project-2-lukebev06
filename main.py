@@ -111,4 +111,10 @@ class patient(person):
         update_csv("patients", "name", self.name, "medical_record", new_record)
 
     def get_history(self):
-        #return the history for the person
+        if len(self.history) == 0:
+            return " no history "
+        for entry in self.history:
+            result = result + " " + entry + "\n"
+        return result
+    
+    

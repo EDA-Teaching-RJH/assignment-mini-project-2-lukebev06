@@ -127,7 +127,6 @@ class patient(person):
         return patient
     
 class staff(person, ABC):
-# name age and id
 
     def __init__(self,name,age):
         super().__init__(name, age)
@@ -146,3 +145,21 @@ class staff(person, ABC):
     def get_details(self):
         return f" {self.get_role()} [{self.id}]  | {self.name} | age: {self.age} | Department: {self.department} "
 
+    def load_all():
+        result = []
+
+        for r in read_csv("staff"):
+            name = r["name"]
+            age = int(r["age"])
+            role = r["role"]
+            extra = r["extra"]
+
+            if role == "doctor":
+                result.append(doctor(name,age,extra))
+            elif role == "nurse":
+                result.append(nurse(name,age,extra))
+            elif role == "receptionist":
+                result.append(receptionist(name,age,extra))
+
+        return result
+    

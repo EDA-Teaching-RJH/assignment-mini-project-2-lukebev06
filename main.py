@@ -167,8 +167,20 @@ class doctor(staff):
 
     def __init__(self,name,age,field):
         super().__init__(name,age)
-        self.field
+        self.field = field
+    
+    def get_role(self):
+        return "doctor"
 
+    def extra(self):
+        return self.field
+    
+    def see_patient(self,patient,notes):
+        patient.add_history(f"seen by Dr. {self.name} ({self.field}): {notes}")
+        print(f" [Dr. {self.name}] consulted {patient.name} - {notes}")
+
+    def get_details(self):
+        return (f"[{self.id} | Dr.{self.name} | Age: {self.age} | {self.field} | Department: {self.department}]")
 
 class nurse(staff):
 

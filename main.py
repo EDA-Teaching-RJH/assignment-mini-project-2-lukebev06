@@ -163,3 +163,15 @@ class staff(person, ABC):
 
         return result
     
+class doctor(staff):
+
+    def __init__(self,name,age,field):
+        super().__init__(name,age)
+        self.field
+
+
+class nurse(staff):
+
+
+
+class receptionist(staff):

@@ -227,10 +227,16 @@ class appointment:
             write_csv("appointments", {"patient_name": self.patient.name, "doctor_name": self.doctor.name, "date": self.appt_date, "status": self.status})
 
     def confirm(self):
-
-    
+        self.status = "confirmed"
+        update_csv("appointments", "patient_name", self.patient.name, "status", "confirmed")
+        
+        print(f" confirmed {self.patient.name} with Dr. {self.doctor.name}")
+        
     def cancel(self):
+        self.status = "cancelled"
+        update_csv("appointments", "patient_name", self.patient.name, "status", "cancelled")
 
+        print(f" cancelled: {self.patient.name} with Dr. {self.doctor.name}")
     
     def load_all(patients, staff):
 

@@ -213,3 +213,27 @@ class receptionist(staff):
         return appt
 
 class appointment:
+    def __init__(self,patient,doctor,appt_date):
+        self.patient = patient
+        self.doctor = doctor
+        self.appt_date = appt_date
+        self.status = "scheduled"
+
+    def save(self):
+
+        existing = read_csv("appointments")
+
+        if not any(r["patient_name"] == self.patient.name and r["date"] == self.appt_date for r in existing):
+            write_csv("appointments", {"patient_name": self.patient.name, "doctor_name": self.doctor.name, "date": self.appt_date, "status": self.status})
+
+    def confirm(self):
+
+    
+    def cancel(self):
+
+    
+    def load_all(patients, staff):
+
+
+    def __str__(self):
+        return f" "

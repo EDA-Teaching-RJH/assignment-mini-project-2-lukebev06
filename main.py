@@ -207,3 +207,9 @@ class receptionist(staff):
         return "receptionist"
 
     def book_appointment(self, patient,doctor, appt_date):
+        appt = appointment(patient,doctor, appt_date)
+        appt.save()
+        print(f"[{self.name}] booked: {patient.name} with Dr. {doctor.name} on {appt_date}")
+        return appt
+
+class appointment:

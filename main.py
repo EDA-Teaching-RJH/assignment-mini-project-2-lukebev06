@@ -184,6 +184,27 @@ class doctor(staff):
 
 class nurse(staff):
 
+    def __init__(self,name,age,shift):
+        super().__init__(name,age)
+        self.shift = shift
+    
+    def get_role(self):
+        return "nurse"
+
+    def extra(self):
+        return self.shift
+    
+    def care_for(self, patient):
+        
 
 
 class receptionist(staff):
+
+    def __init__(self,name,age):
+        super().__init__(name,age)
+    
+    def get_role(self):
+        return "receptionist"
+
+    def book_appointment(self, patient,doctor, appt_date):
+        

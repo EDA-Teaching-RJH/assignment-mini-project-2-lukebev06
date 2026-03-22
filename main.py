@@ -195,8 +195,8 @@ class nurse(staff):
         return self.shift
     
     def care_for(self, patient):
-        
-
+        patient.add_history(f"care given by nurse {self.name} ({self.shift} shift )")
+        print(f" [{self.name} Provided care to {patient.name}]")
 
 class receptionist(staff):
 
@@ -207,4 +207,3 @@ class receptionist(staff):
         return "receptionist"
 
     def book_appointment(self, patient,doctor, appt_date):
-        

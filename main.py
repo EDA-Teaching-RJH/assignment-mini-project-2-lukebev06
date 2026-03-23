@@ -254,4 +254,8 @@ class appointment:
         return result
     
     def __str__(self):
-        return f" "
+        return f" {self.patient.name} | Dr. {self.doctor.name} | {self.appt_date} | {self.status}"
+
+
+class hospital:
+    #add patients . add staff . add appointments . summary of hospital

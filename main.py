@@ -239,7 +239,19 @@ class appointment:
         print(f" cancelled: {self.patient.name} with Dr. {self.doctor.name}")
     
     def load_all(patients, staff):
+        patient_2 = {patient.name: p for p in patients}
+        doctor_2 = {staff.name: s for s in staff if isinstance(s, doctor)}
+        result = []
 
+        for r in read_csv("appointments"):
+            p = patient_2.get(r["patient_name"])
+            d = doctor_2.get(r["doctor_name"])
 
+            if p and d:
+                appt = appointment(p, d, r["date"])
+                appt.status = r["status"]
+                result.append(appt)
+        return result
+    
     def __str__(self):
         return f" "

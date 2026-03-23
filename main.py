@@ -283,4 +283,9 @@ class hospital:
 
     def get_summary(self):
 
-        
+        print(f" Patients: {len(self.patients)} | staff: {len(self.staff)} | appointments: {len(self.appointments)}")
+
+    
+
+def main():
+    

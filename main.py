@@ -259,3 +259,28 @@ class appointment:
 
 class hospital:
     #add patients . add staff . add appointments . summary of hospital
+
+    def __init__(self, name):
+        self.name = name
+        self.patient = []
+        self.staff =[]
+        self.appointments= []
+
+    def register_patient(self,patient):
+
+        self.patients.append(patient)
+        patient.save()
+        print(f"[{self.name}] Registered: {patient.name}")
+
+    def hire_staff(self,member):
+
+        self.staff.append(member)
+        member.save()
+        print(f"[{self.name}] Hired: {member.get_role()} {member.name}")
+
+    def add_appointment(self, appt):
+        self.appointments.append(appt)
+
+    def get_summary(self):
+
+        

@@ -288,4 +288,20 @@ class hospital:
     
 
 def main():
+
+    ''' hire staff
+        register patient
+        book appointment
+        medical record
+        nurse care
+        staff report
+        patient history
+        load appointments
+        staff | role print
+        hospital summary
+
+        reload all csv files
+    '''
+
+    
     

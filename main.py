@@ -303,5 +303,56 @@ def main():
         reload all csv files
     '''
 
+    print("--Hospital managment--")
     
-    
+    for patient in patient.load_all():
+        hospital.patients.append(patient)
+
+    for member in staff.load_all():
+        hospital.staff.append(member)
+
+    while True:
+        print("-- main menu --")
+        print(" 1. Add staff member")
+        print(" 2. register patient")
+        print(" 3. Book appointment")
+        print(" 4. record consult")
+        print(" 5.record nurse care")
+        print(" 6. view all staff")
+        print(" 7. view all patients and histories")
+        print(" 8. view all appointments")
+        print(" 9. exit")
+
+        choice = input("-- enter your choice: ")
+
+        if choice == "1":
+            print("staff roles: 1) doctor, 2) nurce, 3) receptionist")
+
+            role_choice = input("choose role(1-3): ")
+
+            name = input("enter their name: ")
+            age = input("enter their age: ")
+            dept = input("enter their department: ")
+
+            if role_choice == "1":
+                field = input("enter their field: ")
+                member = doctor(name, age, field)
+            
+            elif role_choice == "2":
+                shift = input("enter shift(day or night): ")
+                member = nurse(name, age, shift)
+            
+            elif role_choice == "3":
+                member = receptionist(name, age)
+            
+            else:
+                print(" invalid choice ")
+                continue
+
+            member.department = dept
+            hospital.hire_staff(member)
+
+        elif choice == "2":
+            name = input("enter patient name: ")
+
+

@@ -394,3 +394,33 @@ def main():
             appt = receptionist.book_appointment(patient, doctor, appt_date)
             appt.confirm()
             hospital.add_appintment(appt)
+
+        elif choice == "4":
+
+            if not hospital.patients:
+                print(" there are no patients. ")
+                continue
+            if not any(isinstance(s,doctor) for s in hospital.staff):
+                print(" no doctors on staff yet. ")
+                continue
+            print(" Patients: ")
+            
+            for i, p in enumerate(hospital.patients):
+                print(f"{i+1}. {patient.name}")
+            
+            p_choice = int(input("select patient number: "))
+            patient = hospital.patients[p_choice]
+
+            doctors =[s for s in hospital.staff if isinstance(s,doctor)]
+            print("doctors: ")
+            for i, d in enumerate(doctors):
+                print(f" {i+1}. Dr. {doctor.name}")
+
+            d_choice = int(input(" select doctor number: "))
+            doctor = doctors[d_choice]
+
+            notes = input(" enter consultation notes: ")
+            doctor.see_patient(patient, notes)
+
+        elif choice == "5":
+            

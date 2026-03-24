@@ -376,7 +376,7 @@ def main():
             for i, p in enumerate(hospital.patients):
                 print(f"{i+1}. {patient.name}")
             
-            p_choice = int(input("select patient number: "))
+            p_choice = int(input("select patient number: ")) - 1
             patient = hospital.patients[p_choice]
 
             doctors =[s for s in hospital.staff if isinstance(s,doctor)]
@@ -384,7 +384,7 @@ def main():
             for i, d in enumerate(doctors):
                 print(f" {i+1}. Dr. {doctor.name}")
 
-            d_choice = int(input(" select doctor number: "))
+            d_choice = int(input(" select doctor number: ")) - 1
             doctor = doctors[d_choice]
 
             receptionist = [s for s in hospital.staff if isinstance(s, receptionist)]
@@ -408,7 +408,7 @@ def main():
             for i, p in enumerate(hospital.patients):
                 print(f"{i+1}. {patient.name}")
             
-            p_choice = int(input("select patient number: "))
+            p_choice = int(input("select patient number: ")) - 1
             patient = hospital.patients[p_choice]
 
             doctors =[s for s in hospital.staff if isinstance(s,doctor)]
@@ -416,11 +416,37 @@ def main():
             for i, d in enumerate(doctors):
                 print(f" {i+1}. Dr. {doctor.name}")
 
-            d_choice = int(input(" select doctor number: "))
+            d_choice = int(input(" select doctor number: ")) - 1
             doctor = doctors[d_choice]
 
             notes = input(" enter consultation notes: ")
             doctor.see_patient(patient, notes)
 
         elif choice == "5":
+            if not hospital.patients:
+                print(" there are no patients. ")
+                continue
+
+            if not any(isinstance(s, nurse) for s in hospital.staff):
+                print("there are no nurses on staff. ")
+                continue
+
+            for i, p in enumerate(hospital.patients):
+                print(f"{i+1}. {patient.name}")
+            
+            p_choice = int(input("select patient number: ")) - 1
+            patient = hospital.patients[p_choice]
+
+            nurses =[s for s in hospital.staff if isinstance(s, nurse)]
+            print(" nurses: ")
+
+            for i, n in enumerate(nurses):
+                print(f" {i+1}. {nurse.name}")
+            
+            n_choice = int(input("select nurse number: "))
+            nurse = nurses[n_choice]
+
+            nurse.care_for(patient)
+
+        elif choice == "6":
             

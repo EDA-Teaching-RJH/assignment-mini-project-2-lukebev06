@@ -354,5 +354,43 @@ def main():
 
         elif choice == "2":
             name = input("enter patient name: ")
+            age = int(input("enter patient age: "))
+            condition = input(" enter condition ")
+            patient = patient(name, age, condition)
 
+            hospital.register_patient(patient)
 
+        elif choice == "3":
+
+            if not hospital.patient:
+                print(" there are no patients. ")
+                continue
+            if not any(isinstance(s, receptionist) for s in hospital.staff ):
+                print("there are no receptionists ")
+                continue
+            if not any(isinstance(s, doctor) for s in hospital.staff ):
+                print("there are no doctors. ")
+                continue
+
+            print(" patients: ")
+            for i, p in enumerate(hospital.patients):
+                print(f"{i+1}. {patient.name}")
+            
+            p_choice = int(input("select patient number: "))
+            patient = hospital.patients[p_choice]
+
+            doctors =[s for s in hospital.staff if isinstance(s,doctor)]
+            print("doctors: ")
+            for i, d in enumerate(doctors):
+                print(f" {i+1}. Dr. {doctor.name}")
+
+            d_choice = int(input(" select doctor number: "))
+            doctor = doctors[d_choice]
+
+            receptionist = [s for s in hospital.staff if isinstance(s, receptionist)]
+            receptionist = receptionist[0]
+
+            appt_date = input("enter appointment date ( e.g 2026-04-30)")
+            appt = receptionist.book_appointment(patient, doctor, appt_date)
+            appt.confirm()
+            hospital.add_appintment(appt)

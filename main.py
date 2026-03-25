@@ -33,9 +33,9 @@ import csv
 import os
 
 CSV_FILES = {
-    "patients", ("patients.csv", ["id","name","age","condition","medical_record"]),
-    "staff", ("staff.csv", ["id","name","age","role","extra"]),
-    "appointments", ("appointments.csv", ["patient_name","doctor_name","date","status"])
+    "patients": ("patients.csv", ["id","name","age","condition","medical_record"]),
+    "staff": ("staff.csv", ["id","name","age","role","extra"]),
+    "appointments": ("appointments.csv", ["patient_name","doctor_name","date","status"])
 }
 
 def read_csv(key):

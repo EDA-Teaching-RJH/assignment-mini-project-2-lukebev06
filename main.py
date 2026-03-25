@@ -451,7 +451,7 @@ def main():
         elif choice == "6":
             if not hospital.staff:
                 print("no staff registered. ")
-            
+                continue
             else:
                 print(" staff: ")
                 for member in hospital.staff:
@@ -459,10 +459,24 @@ def main():
 
         elif choice == "7":
             if not hospital.patient:
-                print(" no patients registered")
+                print(" no patients registered. ")
+                continue
             else:
                 print(" patients: ")
                 for patient in hospital.patients:
                     print(f" {patient.get_details()} | {patient.get_history()}")
                 
-            
+
+        elif choice == "8":
+            if not hospital.appointments:
+                print(" no appointments booked. ")
+            else:
+                print(" appointments ")
+                for a in hospital.appointments:
+                    print(a)
+
+        elif choice == "9":
+            break
+
+        else:
+            print(" invalid selection please enter between 1 and 9. ")

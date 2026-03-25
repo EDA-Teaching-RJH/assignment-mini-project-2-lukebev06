@@ -449,4 +449,20 @@ def main():
             nurse.care_for(patient)
 
         elif choice == "6":
+            if not hospital.staff:
+                print("no staff registered. ")
+            
+            else:
+                print(" staff: ")
+                for member in hospital.staff:
+                    print(f" {member.get_details()}")
+
+        elif choice == "7":
+            if not hospital.patient:
+                print(" no patients registered")
+            else:
+                print(" patients: ")
+                for patient in hospital.patients:
+                    print(f" {patient.get_details()} | {patient.get_history()}")
+                
             

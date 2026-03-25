@@ -66,7 +66,7 @@ def update_csv(key, match_field, match_value, update_field, new_value):
     with open(filepath, "w", newline="") as f:
         w = csv.DictWriter(f,fieldnames = headers)
         w.writeheader()
-        w.writerows(row)
+        w.writerows(rows)
 
 class Person(ABC):
     
@@ -105,18 +105,15 @@ class Patient(Person):
 
     
     def add_history(self,entry):
-        dated = f"[{date.todat()}] {entry}"
+        dated = f"[{date.today()}] {entry}"
         self.history.append(dated)
         new_record = self.history
 
         update_csv("patients", "name", self.name, "medical_record", new_record)
 
     def get_history(self):
-        if len(self.history) == 0:
-            return " no history "
-        for entry in self.history:
-            result = result + " " + entry + "\n"
-        return result
+        
+        return "\n".join(f"  {e}" for e in self._history) if self._history else " no history "
     
     def get_details(self):
         return f"Patient [{self.id}] | {self.name} | Age: {self.age} | Condition: {self.condition}"
@@ -127,7 +124,7 @@ class Patient(Person):
         for r in read_csv("patients"):
             p = Patient(r["name"], int(r["age"]), r["condition"])
             patients.append(p)
-        return Patient
+        return patients
     
 class Staff(Person, ABC):
 
@@ -164,7 +161,7 @@ class Staff(Person, ABC):
             elif role == "nurse":
                 result.append(Nurse(name,age,extra))
             elif role == "receptionist":
-                result.append(Receptionist(name,age,extra))
+                result.append(Receptionist(name,age))
 
         return result
     
@@ -177,7 +174,7 @@ class Doctor(Staff):
     def get_role(self):
         return "doctor"
 
-    def extra(self):
+    def get_extra(self):
         return self.field
     
     def see_patient(self,patient,notes):
@@ -196,7 +193,7 @@ class Nurse(Staff):
     def get_role(self):
         return "nurse"
 
-    def extra(self):
+    def get_extra(self):
         return self.shift
     
     def care_for(self, patient):
@@ -246,8 +243,8 @@ class Appointment:
 
     @staticmethod
     def load_all(patients, staff):
-        patient_2 = {Patient.name: p for p in patients}
-        doctor_2 = {staff.name: s for s in staff if isinstance(s, Doctor)}
+        patient_2 = {p.name: p for p in patients}
+        doctor_2 = {s.name: s for s in staff if isinstance(s, Doctor)}
         result = []
 
         for r in read_csv("appointments"):
@@ -269,7 +266,7 @@ class Hospital:
 
     def __init__(self, name):
         self.name = name
-        self.patient = []
+        self.patients = []
         self.staff =[]
         self.appointments= []
 
@@ -312,11 +309,14 @@ def main():
 
     print("--Hospital managment--")
     
+    hospital_name = input("enter hospital name: ")
+    hospital = Hospital(hospital_name)
+
     for patient in Patient.load_all():
-        Hospital.patients.append(patient)
+        hospital.patients.append(patient)
 
     for member in Staff.load_all():
-        Hospital.staff.append(member)
+        hospital.staff.append(member)
 
     while True:
         print("-- main menu --")
@@ -343,50 +343,50 @@ def main():
 
             if role_choice == "1":
                 field = input("enter their field: ")
-                member = doctor(name, age, field)
+                member = Doctor(name, age, field)
             
             elif role_choice == "2":
                 shift = input("enter shift(day or night): ")
-                member = nurse(name, age, shift)
+                member = Nurse(name, age, shift)
             
             elif role_choice == "3":
-                member = receptionist(name, age)
+                member = Receptionist(name, age)
             
             else:
                 print(" invalid choice ")
                 continue
 
             member.department = dept
-            Hospital.hire_staff(member)
+            hospital.hire_staff(member)
 
         elif choice == "2":
             name = input("enter patient name: ")
             age = int(input("enter patient age: "))
             condition = input(" enter condition ")
-            patient = patient(name, age, condition)
+            patient = Patient(name, age, condition)
 
-            Hospital.register_patient(patient)
+            hospital.register_patient(patient)
 
         elif choice == "3":
 
-            if not Hospital.patient:
+            if not hospital.patients:
                 print(" there are no patients. ")
                 continue
-            if not any(isinstance(s, receptionist) for s in Hospital.staff ):
+            if not any(isinstance(s, Receptionist) for s in hospital.staff ):
                 print("there are no receptionists ")
                 continue
-            if not any(isinstance(s, doctor) for s in Hospital.staff ):
+            if not any(isinstance(s, Doctor) for s in hospital.staff ):
                 print("there are no doctors. ")
                 continue
 
             print(" patients: ")
-            for i, p in enumerate(Hospital.patients):
-                print(f"{i+1}. {patient.name}")
+            for i, p in enumerate(hospital.patients):
+                print(f"{i+1}. {p.name}")
             
             p_choice = int(input("select patient number: ")) - 1
-            patient = Hospital.patients[p_choice]
+            patient = hospital.patients[p_choice]
 
-            doctors =[s for s in Hospital.staff if isinstance(s,doctor)]
+            doctors =[s for s in hospital.staff if isinstance(s,Doctor)]
             print("doctors: ")
             for i, d in enumerate(doctors):
                 print(f" {i+1}. Dr. {doctor.name}")
@@ -394,31 +394,31 @@ def main():
             d_choice = int(input(" select doctor number: ")) - 1
             doctor = doctors[d_choice]
 
-            receptionist = [s for s in Hospital.staff if isinstance(s, receptionist)]
+            receptionist = [s for s in hospital.staff if isinstance(s, receptionist)]
             receptionist = receptionist[0]
 
             appt_date = input("enter appointment date ( e.g 2026-04-30)")
             appt = receptionist.book_appointment(patient, doctor, appt_date)
             appt.confirm()
-            Hospital.add_appintment(appt)
+            hospital.add_appintment(appt)
 
         elif choice == "4":
 
-            if not Hospital.patients:
+            if not hospital.patients:
                 print(" there are no patients. ")
                 continue
-            if not any(isinstance(s,doctor) for s in Hospital.staff):
+            if not any(isinstance(s,doctor) for s in hospital.staff):
                 print(" no doctors on staff yet. ")
                 continue
             print(" Patients: ")
             
-            for i, p in enumerate(Hospital.patients):
+            for i, p in enumerate(hospital.patients):
                 print(f"{i+1}. {patient.name}")
             
             p_choice = int(input("select patient number: ")) - 1
-            patient = Hospital.patients[p_choice]
+            patient = hospital.patients[p_choice]
 
-            doctors =[s for s in Hospital.staff if isinstance(s,doctor)]
+            doctors =[s for s in hospital.staff if isinstance(s,doctor)]
             print("doctors: ")
             for i, d in enumerate(doctors):
                 print(f" {i+1}. Dr. {doctor.name}")
@@ -430,21 +430,21 @@ def main():
             doctor.see_patient(patient, notes)
 
         elif choice == "5":
-            if not Hospital.patients:
+            if not hospital.patients:
                 print(" there are no patients. ")
                 continue
 
-            if not any(isinstance(s, nurse) for s in Hospital.staff):
+            if not any(isinstance(s, nurse) for s in hospital.staff):
                 print("there are no nurses on staff. ")
                 continue
 
-            for i, p in enumerate(Hospital.patients):
+            for i, p in enumerate(hospital.patients):
                 print(f"{i+1}. {patient.name}")
             
             p_choice = int(input("select patient number: ")) - 1
-            patient = Hospital.patients[p_choice]
+            patient = hospital.patients[p_choice]
 
-            nurses =[s for s in Hospital.staff if isinstance(s, nurse)]
+            nurses =[s for s in hospital.staff if isinstance(s, nurse)]
             print(" nurses: ")
 
             for i, n in enumerate(nurses):
@@ -456,30 +456,30 @@ def main():
             nurse.care_for(patient)
 
         elif choice == "6":
-            if not Hospital.staff:
+            if not hospital.staff:
                 print("no staff registered. ")
                 continue
             else:
                 print(" staff: ")
-                for member in Hospital.staff:
+                for member in hospital.staff:
                     print(f" {member.get_details()}")
 
         elif choice == "7":
-            if not Hospital.patient:
+            if not hospital.patient:
                 print(" no patients registered. ")
                 continue
             else:
                 print(" patients: ")
-                for patient in Hospital.patients:
+                for patient in hospital.patients:
                     print(f" {patient.get_details()} | {patient.get_history()}")
                 
 
         elif choice == "8":
-            if not Hospital.appointments:
+            if not hospital.appointments:
                 print(" no appointments booked. ")
             else:
                 print(" appointments ")
-                for a in Hospital.appointments:
+                for a in hospital.appointments:
                     print(a)
 
         elif choice == "9":

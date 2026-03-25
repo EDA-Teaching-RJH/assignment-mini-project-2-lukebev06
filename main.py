@@ -78,7 +78,8 @@ class Person(ABC):
 
         self.name = name
         self.age = age
-    
+
+    @abstractmethod
     def get_details(self):
         pass
 
@@ -120,10 +121,12 @@ class Patient(Person):
     def get_details(self):
         return f"Patient [{self.id}] | {self.name} | Age: {self.age} | Condition: {self.condition}"
 
+    @staticmethod
     def load_all():
+        patients =[]
         for r in read_csv("patients"):
             p = Patient(r["name"], int(r["age"]), r["condition"])
-            Patient.append(p)
+            patients.append(p)
         return Patient
     
 class Staff(Person, ABC):
@@ -132,6 +135,7 @@ class Staff(Person, ABC):
         super().__init__(name, age)
         self.department = "unassigned"
 
+    @abstractmethod
     def get_role(self):
         pass
 
@@ -145,6 +149,7 @@ class Staff(Person, ABC):
     def get_details(self):
         return f" {self.get_role()} [{self.id}]  | {self.name} | age: {self.age} | Department: {self.department} "
 
+    @staticmethod
     def load_all():
         result = []
 
@@ -238,6 +243,8 @@ class Appointment:
 
         print(f" cancelled: {self.patient.name} with Dr. {self.doctor.name}")
     
+
+    @staticmethod
     def load_all(patients, staff):
         patient_2 = {Patient.name: p for p in patients}
         doctor_2 = {staff.name: s for s in staff if isinstance(s, Doctor)}
@@ -305,8 +312,8 @@ def main():
 
     print("--Hospital managment--")
     
-    for p in Patient.load_all():
-        Hospital.patients.append(p)
+    for patient in Patient.load_all():
+        Hospital.patients.append(patient)
 
     for member in Staff.load_all():
         Hospital.staff.append(member)

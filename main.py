@@ -35,6 +35,7 @@ from datetime import date
 from abc import ABC, abstractmethod
 import csv
 import os
+import re
 
 CSV_FILES = {
     "patients": ("patients.csv", ["id","name","age","condition","medical_record"]),
@@ -299,7 +300,84 @@ class Hospital:
 
         print(f" Patients: {len(self.patients)} | staff: {len(self.staff)} | appointments: {len(self.appointments)}")
 
-    
+#change to regex system instead of a function.
+
+
+import sys
+
+def load_hospital():
+    hospital_name = input("enter your hospital name: ")
+    hospital = Hospital(hospital_name)
+
+    for p in Patient.load_all():
+        hospital.patients.append(p)
+    for m in Staff.load_all():
+        hospital.staff.append(m)
+    return hospital
+
+if __name__ == "__main__":
+
+    if len(sys.argv) < 2:
+
+        print("usage")
+        print(" python hospital_system.py add_staff      - add a new staff member")
+        print(" python hospital_system.py add_ patient   - register new patient")
+        print(" python hospital_system.py book           - book and appointment")
+        print(" python hospital_system.py consult        - record a consultation")
+        print(" python hospital_system.py nurse_care     - record a nurse care")
+        print(" python hospital_system.py list_staff     - list all staff")
+        print(" python hospital_system.py list_ patients - list all patients and histories")
+        print(" python hospital_system.py appointments   - list all appointments")
+        print(" python hospital_system.py demo           - run a demo with example data")
+
+    else:
+        command = sys.argv[1]
+        hospital = load_hospital()
+
+        if command == "add_staff":
+            print("staff roles: 1) doctor, 2) nurce, 3) receptionist")
+            role_choice = input("choose role(1-3): ")
+
+            while True:
+
+                name = input(" enter name: ")
+                if re.match(r"^[A-Za-z ]+$", name):
+                    break
+                print("invalid name. only use letters. ")
+
+            age = input("enter their age: ")
+            dept = input("enter their department: ")
+
+            if role_choice == "1":
+                field = input("enter their field: ")
+                member = Doctor(name, age, field)
+            
+            elif role_choice == "2":
+                shift = input("enter shift(day or night): ")
+                member = Nurse(name, age, shift)
+            
+            elif role_choice == "3":
+                member = Receptionist(name, age)
+            
+            else:
+                print(" invalid choice ")
+                sys.exit()
+            member.department = dept
+            hospital.hire_staff(member)
+
+        elif command == "add_patient":
+            while True:
+                name = input("enter patient name: ")
+                if re.match(r"^[A-Za-z ]+$", name):
+                    break
+                print("invalid name. only use letters.")
+
+            age = int(input("enter patient age: "))
+            condition = input(" enter condition ")
+            patient = Patient(name, age, condition)
+
+            hospital.register_patient(patient)
+
 
 def main():
 

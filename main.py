@@ -497,7 +497,7 @@ if __name__ == "__main__":
                 print(" no patients registered. ")
             else:
                 print(" patients: ")
-                for pa in hospital.patients:
+                for p in hospital.patients:
                     print(f" {p.get_details()}")
                     print(p.get_history())
         
@@ -511,25 +511,28 @@ if __name__ == "__main__":
                     print(f" {r["patient_name"]} | Dr. {r["doctor_name"]} | {r["date"]} | {r["status"]}")
 
         elif command == "demo":
-            
 
+            print(" -- demo running --")
 
-def main():
-        
-            
-        elif choice == "8":
-            if not hospital.appointments:
-                print(" no appointments booked. ")
-            else:
-                print(" appointments ")
-                for a in hospital.appointments:
-                    print(a)
+            doctor = Doctor("emily clarke", 45, "general practice")
+            nurse = Nurse("tom baker", 29, "day")
+            receptionist = Receptionist("sarah miller", 34)
 
-        elif choice == "9":
-            break
+            for m in [doctor, nurse, receptionist]:
+                m.department = "general medicine"
+                hospital.hire_staff(m)
+            patient1 = Patient("alice thompson", 42, "chest pain")
+            patient2 = Patient("bob harris", 68, "hypertension")
+
+            hospital.register_patient(patient1)
+            hospital.register_patient(patient2)
+
+            appt = receptionist.book_appointment(patient1, doctor, "2025-06-01")
+            appt.confirm()
+
+            doctor.see_patient(patient1, "reviewed chest pain")
+            nurse.care_for(patient1)
+            print("demo complete. - Run list_patients and/or list_staff to see them added to csv files")
 
         else:
-            print(" invalid selection please enter between 1 and 9. ")
-
-if __name__ =="__main__":
-    main()
+            print(f"unknown command {command}")

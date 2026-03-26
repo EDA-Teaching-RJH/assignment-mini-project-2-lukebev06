@@ -5,26 +5,30 @@ import os
 
 make a csv dictionary with tuples. allows for 1 place for things to be changed within csv format
 
-function to read csv -- done
-function to write csv -- done
-function to update csv -- done
+ -- function to read csv -- 
 
-class hospital
+ -- function to write csv -- 
 
- class person
+ -- function to update csv -- 
+
+    --- general format for code ---
+class hospital         (root class)
+
+ class person            (parent class)
  --- lots of subclasses and inheritance of the same functions e.g. get_details. use a abstract base class. --- 
 
-  class patient
+  class patient             (child class)
 
-  class staff
+  class staff               (child / parent class)
 --- use an abc like with person. due to the amount of subclasses that will use the same methods ---
-    class doctor
-    class nurse
-    class receptionist
+    class doctor                (child class)
+    class nurse                 (child class)
+    class receptionist          (child class)
 
- class appointment
- class
+ class appointment          (base class)
  
+
+ main function to use all classes and functions inside the classes
 '''
 
 from datetime import date

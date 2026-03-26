@@ -149,7 +149,7 @@ class Staff(Person, ABC):
 
     def save(self):
         if not any(r["name"] == self.name for r in read_csv("staff")):
-            write_csv("staff", {"id": self.id, "name": self.name, "age": self.age, "role": self.get_role(), "extra": self.get_extra()})
+            write_csv("staff", {"id": self.id, "name": self.name, "age": self.age, "role": self.get_role()})
 
     def extra():
         return ""

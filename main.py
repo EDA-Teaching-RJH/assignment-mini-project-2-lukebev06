@@ -377,95 +377,18 @@ if __name__ == "__main__":
             patient = Patient(name, age, condition)
 
             hospital.register_patient(patient)
-
-
-def main():
-
-    ''' hire staff
-        register patient
-        book appointment
-        medical record
-        nurse care
-        staff report
-        patient history
-        load appointments
-        staff | role print
-        hospital summary
-
-        reload all csv files
-    '''
-
-    print("--Hospital managment--")
-    
-    hospital_name = input("enter hospital name: ")
-    hospital = Hospital(hospital_name)
-
-    for patient in Patient.load_all():
-        hospital.patients.append(patient)
-
-    for member in Staff.load_all():
-        hospital.staff.append(member)
-
-    while True:
-        print("-- main menu --")
-        print(" 1. Add staff member")
-        print(" 2. register patient")
-        print(" 3. Book appointment")
-        print(" 4. record consult")
-        print(" 5.record nurse care")
-        print(" 6. view all staff")
-        print(" 7. view all patients and histories")
-        print(" 8. view all appointments")
-        print(" 9. exit")
-
-        choice = input("-- enter your choice: ")
-
-        if choice == "1":
-            print("staff roles: 1) doctor, 2) nurce, 3) receptionist")
-
-            role_choice = input("choose role(1-3): ")
-
-            name = input("enter their name: ")
-            age = input("enter their age: ")
-            dept = input("enter their department: ")
-
-            if role_choice == "1":
-                field = input("enter their field: ")
-                member = Doctor(name, age, field)
-            
-            elif role_choice == "2":
-                shift = input("enter shift(day or night): ")
-                member = Nurse(name, age, shift)
-            
-            elif role_choice == "3":
-                member = Receptionist(name, age)
-            
-            else:
-                print(" invalid choice ")
-                continue
-
-            member.department = dept
-            hospital.hire_staff(member)
-
-        elif choice == "2":
-            name = input("enter patient name: ")
-            age = int(input("enter patient age: "))
-            condition = input(" enter condition ")
-            patient = Patient(name, age, condition)
-
-            hospital.register_patient(patient)
-
-        elif choice == "3":
+        
+        elif command == "book":
 
             if not hospital.patients:
                 print(" there are no patients. ")
-                continue
+                sys.exit()
             if not any(isinstance(s, Receptionist) for s in hospital.staff ):
                 print("there are no receptionists ")
-                continue
+                sys.exit()
             if not any(isinstance(s, Doctor) for s in hospital.staff ):
                 print("there are no doctors. ")
-                continue
+                sys.exit()
 
             print(" patients: ")
             for i, p in enumerate(hospital.patients):
@@ -490,22 +413,25 @@ def main():
                     print(" please enter a number")
             doctor = doctors[d_choice]
 
-            receptionist = [s for s in hospital.staff if isinstance(s, Receptionist)]
-            receptionist = receptionist[0]
+            receptionist = [s for s in hospital.staff if isinstance(s, Receptionist)][0]
 
-            appt_date = input("enter appointment date ( e.g 2026-04-30)")
+            while True:
+                appt_date = input(" enter appointment date (yyyy-mm-dd): ")
+                if re.match(r"^\d{4}-\d{2}-\d{2}$", appt_date):
+                    break
+                print(" invalid format. please use the provided formatting. ")
+            
             appt = receptionist.book_appointment(patient, doctor, appt_date)
             appt.confirm()
-            hospital.add_appointment(appt)
 
-        elif choice == "4":
+        elif command == "consult":
 
             if not hospital.patients:
                 print(" there are no patients. ")
-                continue
+                sys.exit()
             if not any(isinstance(s,Doctor) for s in hospital.staff):
                 print(" no doctors on staff yet. ")
-                continue
+                sys.exit()
             print(" Patients: ")
             
             for i, p in enumerate(hospital.patients):
@@ -524,15 +450,14 @@ def main():
 
             notes = input(" enter consultation notes: ")
             doctor.see_patient(patient, notes)
+        elif command == "nurse_care":
 
-        elif choice == "5":
             if not hospital.patients:
-                print(" there are no patients. ")
-                continue
-
+                print(" No patients registered yet.")
+                sys.exit()
             if not any(isinstance(s, Nurse) for s in hospital.staff):
-                print("there are no nurses on staff. ")
-                continue
+                print(" No nurses on staff yet.")
+                sys.exit()
 
             for i, p in enumerate(hospital.patients):
                 print(f"{i+1}. {p.name}")
@@ -558,10 +483,20 @@ def main():
 
             nurse.care_for(patient)
 
+
+        elif command == "list_staff":
+            if not hospital.staff:
+                print("no staff registered. ")
+            else:
+                print(" staff: ")
+                for member in hospital.staff:
+                    print(f" {member.get_details()}")
+
+
+def main():
         elif choice == "6":
             if not hospital.staff:
                 print("no staff registered. ")
-                continue
             else:
                 print(" staff: ")
                 for member in hospital.staff:

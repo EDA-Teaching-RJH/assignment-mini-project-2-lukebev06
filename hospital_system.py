@@ -76,7 +76,7 @@ def update_csv(key, match_field, match_value, update_field, new_value):
                 w.writerow(row)
 
 class Person(ABC):
-    
+    # has the general informatio any person would have. name and age. nothing specific to every person.
     id_counter = 1
 
     def __init__(self,name,age):
@@ -94,7 +94,7 @@ class Person(ABC):
         return self.get_details()
     
 class Patient(Person):
-
+    #more specific person class for just patients. used inheritance from person to use name and age. added more functions and data for a patient
     def __init__(self,name,age,condition):
         super().__init__(name,age)
         self.condition = condition

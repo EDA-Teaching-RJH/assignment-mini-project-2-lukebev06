@@ -138,7 +138,7 @@ class Patient(Person):
         return patients
     
 class Staff(Person, ABC):
-
+    #added more specifc information to all staff members but not job specific
     def __init__(self,name,age):
         super().__init__(name, age)
         self.department = "unassigned"
@@ -177,7 +177,7 @@ class Staff(Person, ABC):
         return result
     
 class Doctor(Staff):
-
+    #added more job specific details related to doctors
     def __init__(self,name,age,field):
         super().__init__(name,age)
         self.field = field
@@ -196,7 +196,7 @@ class Doctor(Staff):
         return (f"[{self.id} | Dr.{self.name} | Age: {self.age} | {self.field} | Department: {self.department}]")
 
 class Nurse(Staff):
-
+    #added more details in regards to nurses
     def __init__(self,name,age,shift):
         super().__init__(name,age)
         self.shift = shift
@@ -212,7 +212,7 @@ class Nurse(Staff):
         print(f" [{self.name} Provided care to {patient.name}]")
 
 class Receptionist(Staff):
-
+    #added more details for receptionist
     def __init__(self,name,age):
         super().__init__(name,age)
     
@@ -226,6 +226,7 @@ class Receptionist(Staff):
         return appt
 
 class Appointment:
+    # uses patients and doctor info to make appointments and adding dates
     def __init__(self,patient,doctor,appt_date):
         self.patient = patient
         self.doctor = doctor

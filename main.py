@@ -492,26 +492,31 @@ if __name__ == "__main__":
                 for member in hospital.staff:
                     print(f" {member.get_details()}")
 
-
-def main():
-        elif choice == "6":
-            if not hospital.staff:
-                print("no staff registered. ")
-            else:
-                print(" staff: ")
-                for member in hospital.staff:
-                    print(f" {member.get_details()}")
-
-        elif choice == "7":
+        elif command == "list_patients":
             if not hospital.patients:
                 print(" no patients registered. ")
-                continue
             else:
                 print(" patients: ")
-                for patient in hospital.patients:
-                    print(f" {patient.get_details()} | {patient.get_history()}")
-                
+                for pa in hospital.patients:
+                    print(f" {p.get_details()}")
+                    print(p.get_history())
+        
+        elif command == "appointments":
+            rows = read_csv("appointments")
+            if not rows:
+                print("no appointments booked")
+            else:
+                print(" -- appointments -- ")
+                for r in rows:
+                    print(f" {r["patient_name"]} | Dr. {r["doctor_name"]} | {r["date"]} | {r["status"]}")
 
+        elif command == "demo":
+            
+
+
+def main():
+        
+            
         elif choice == "8":
             if not hospital.appointments:
                 print(" no appointments booked. ")
